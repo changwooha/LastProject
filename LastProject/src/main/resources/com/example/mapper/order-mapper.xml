@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.example.mapper.OrderMapper">
+	
+	<insert id="insertByCode" parameterType="hashmap">
+		insert into	orderdetail(odtno, odtquantity, prdcode, mbrid)
+		values(ORDERDETAIL_SEQ.nextval,#{odtQuantity},#{prdCode},#{mbrId})
+	</insert>
+	
+	<select id="selectByUserId" parameterType="String" resultType="com.example.dto.OrderDetail">
+		select *
+		from orderDetail
+		where mbrid = #{mbrId} and odtcheck = 0
+	</select>
+
+	<select id="selectByDate" parameterType="String" resultType="com.example.dto.Driver">
+		select d.drno
+		from driver d full outer join (select *
+		                              from (select ord.drno, sum(ord.installtime) installtime
+		                                      from ord
+		                                      where ordDeliveryDate = #{ordDeliveryDate}
+		                                      group by ord.drno)
+		                              where installtime > 8) o
+		on d.drno = o.drno
+		where installtime is null
+	</select>
+	
+	<select id="selectInstallTime" parameterType="hashmap" resultType="int">
+		select prdinstalltime * #{prdQuantity}
+		from product
+		where prdcode = #{prdCode}
+	</select>
+	
+	<insert id="insertOrd" parameterType="hashmap">
+		insert into ord (ordno,ORDDELIVERYDATE, ORDNAME, ORDPHONE, MBRID, ORDMEMO, ORDADDRESS, DRNO, installtime)
+		values(ORDERDETAIL_SEQ.nextval,#{ordDeliveryDate},#{ordName},#{ordPhone},#{mbrId},#{ordMemo},#{ordAddress},#{drNo}, #{installTime})
+	</insert>
+	
+	<select id="selectOrdByMbrId" parameterType="String" resultType="int">
+		select ordNo
+		from ord
+		where mbrId = #{mbrId}
+	</select>
+	
+	<update id="updateOrderDetail" parameterType="hashmap">
+		UPDATE orderdetail
+		SET	odtcheck=1, ordno = #{ordNo}
+		WHERE odtNo = #{odtNo} and mbrid = #{mbrId}
+	</update>
+	
+</mapper>
