@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.example.mapper.MemberMapper">
+
+	<select id="selectMemberByIdAndPasswd" resultType="com.example.dto.Member"
+		parameterType="hashmap">
+		SELECT mbrId
+		FROM member 
+		WHERE mbrId=#{mbrId} AND mbrPasswd=#{mbrPasswd}
+	</select>
+	
+	<insert id="insertMember" parameterType="com.example.dto.Member">
+	INSERT INTO MEMBER (MBRID, MBRPASSWD, MBRNAME, MBRPHONE, MBRADDRESS, MBRUSERTYPE, mbrEmail)
+		VALUES (#{mbrId}, #{mbrPasswd}, #{mbrName, jdbcType=VARCHAR}, #{mbrPhone, jdbcType=VARCHAR}, #{mbrAddress, jdbcType=VARCHAR}, #{mbrUserType}, #{mbrEmail})
+	</insert>
+	
+	
+	<select id="selectMessageByMemberName" parameterType="String" resultType="String">
+	select boardWriter
+	from message
+	where mbrId = #{mbrId}
+	order by messageno desc
+	</select>
+	
+	<select id="selectMessage" parameterType="string" resultType="int">
+		select count(*)
+		from message
+		where mbrId = #{mbrId}
+	</select>
+	
+
+</mapper>
+ 
