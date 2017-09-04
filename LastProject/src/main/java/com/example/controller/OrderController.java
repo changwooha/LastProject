@@ -110,10 +110,10 @@ public class OrderController {
 			return "error";
 		} else {
 			for (int i = 0; i < driverEnableByDate.size(); i++) {
-				System.out.println(driverEnableByDate.get(i).getDrno());
+				System.out.println(driverEnableByDate.get(i).getDrNo());
 			}
 		}
-		int drNo = driverEnableByDate.get(0).getDrno();
+		int drNo = driverEnableByDate.get(0).getDrNo();
 		omsService.insertOrder(mbrId, ordAddress, ordPhone, ordName, drNo, dbDate, totalInstallTime);
 
 		for (int i = 0; i < productList.size(); i++) {
