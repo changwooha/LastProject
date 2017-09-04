@@ -9,6 +9,8 @@ public class OrderDetail {
 	private String mbrId;
 	private int odtCheck;
 	private int odtType;
+	private String prdName; // 오더조회용
+	private String prdSize;
 	
 	public int getOdtNo() {
 		return odtNo;
@@ -51,6 +53,18 @@ public class OrderDetail {
 	}
 	public void setOdtType(int odtType) {
 		this.odtType = odtType;
+	}
+	public String getPrdName() {
+		return prdName;
+	}
+	public void setPrdName(String prdName) {
+		this.prdName = prdName;
+	}
+	public String getPrdSize() {
+		return prdSize;
+	}
+	public void setPrdSize(String prdSize) {
+		this.prdSize = prdSize;
 	}
 	
 

@@ -11,6 +11,7 @@ public class Order {
 	private String ordAddress;
 	private String ordPhone;
 	private String ordName;
+	private String mbrId;
 	private Date ordDeliveryDate;
 	private int onstallTime;
 	private int odtQuantity;
@@ -40,12 +41,6 @@ public class Order {
 	}
 	public void setOrdAddress(String ordAddress) {
 		this.ordAddress = ordAddress;
-	}
-	public Date getRdDeliveryDate() {
-		return ordDeliveryDate;
-	}
-	public void setRdDeliveryDate(Date rdDeliveryDate) {
-		this.ordDeliveryDate = rdDeliveryDate;
 	}
 	public int getOnstallTime() {
 		return onstallTime;
@@ -82,6 +77,18 @@ public class Order {
 	}
 	public void setOrdName(String ordName) {
 		this.ordName = ordName;
+	}
+	public String getMbrId() {
+		return mbrId;
+	}
+	public void setMbrId(String mbrId) {
+		this.mbrId = mbrId;
+	}
+	public Date getOrdDeliveryDate() {
+		return ordDeliveryDate;
+	}
+	public void setOrdDeliveryDate(Date ordDeliveryDate) {
+		this.ordDeliveryDate = ordDeliveryDate;
 	}
 	
 }

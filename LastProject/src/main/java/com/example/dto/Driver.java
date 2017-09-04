@@ -3,7 +3,7 @@ package com.example.dto;
 public class Driver {
 
 	private int drNo;
-	private String drNameE;
+	private String drName;
 	private String drPhone;
 	private String drAddress;
 	
@@ -12,12 +12,6 @@ public class Driver {
 	}
 	public void setDrNo(int drNo) {
 		this.drNo = drNo;
-	}
-	public String getDrNameE() {
-		return drNameE;
-	}
-	public void setDrNameE(String drNameE) {
-		this.drNameE = drNameE;
 	}
 	public String getDrPhone() {
 		return drPhone;
@@ -30,5 +24,11 @@ public class Driver {
 	}
 	public void setDrAddress(String drAddress) {
 		this.drAddress = drAddress;
+	}
+	public String getDrName() {
+		return drName;
+	}
+	public void setDrName(String drName) {
+		this.drName = drName;
 	}
 }

@@ -1,0 +1,91 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.example.mapper.OmsMapper">
+
+	<select id="findByNameAndPhoneNumber" parameterType="hashmap"
+		resultType="com.example.dto.Member">
+		SELECT MBRNAME, MBRPHONE, MBRADDRESS, MBRID
+		FROM MEMBER
+		WHERE MBRNAME = #{mbrName} AND MBRPHONE = #{mbrPhone}
+	</select>
+
+	<select id="productList" parameterType="hashmap" resultType="com.example.dto.Product">
+		SELECT *
+		FROM PRODUCT
+	</select>
+
+	<insert id="insertOrderList" parameterType="hashmap">
+		INSERT INTO
+		ORDERDETAIL(ODTNO, PRDCODE, ODTQUANTITY, ODTCHECK, ORDNO)
+		VALUES(ORDERDETAIL_SEQ.NEXTVAL, #{prdName}, #{prdQuantity}, 1,
+		(SELECT
+		ORDNO FROM
+		(SELECT * FROM ORD
+		WHERE MBRID=#{mbrId}
+		ORDER BY ORDDATE DESC)
+		WHERE ROWNUM=1))
+	</insert>
+
+
+	<insert id="insertOrder" parameterType="hashmap">
+		INSERT INTO
+		ORD(ORDNO,
+		MBRID, ORDNAME, ORDADDRESS, ORDPHONE, DRNO, ORDDELIVERYDATE,
+		INSTALLTIME)
+		VALUES(ORD_SEQ.NEXTVAL, #{mbrId}, #{ordName},
+		#{ordAddress}, #{ordPhone}, #{drNo}, #{dbDate}, #{totalInstallTime})
+	</insert>
+
+	<select id="selectDriverEnableTimeByDate" parameterType="hashmap"
+		resultType="com.example.dto.Driver">
+
+		select a.drno
+		from driver a left outer join (select b.drno
+		,
+		sum(b.installtime) as installtime
+		from ord b
+		where b.ORDDELIVERYDATE =
+		#{dbDate}
+		group by
+		b.drno
+		) b
+		on a.drno = b.drno
+		where b.drno is null
+		or
+		b.installtime <![CDATA[ <=  ]]>8
+		- #{totalInstallTime}
+	</select>
+
+	<select id="findOrderList" parameterType="hashmap" resultType="com.example.dto.Order">
+		SELECT *
+		FROM ORD
+		WHERE TO_CHAR(ORDDATE,'YYYY-MM-DD') BETWEEN #{stDate}
+		AND #{fhDate}
+		AND MBRID LIKE '%'||#{mbrId}||'%'
+		AND ORDNAME LIKE
+		'%'||#{mbrName}||'%'
+		AND ORDPHONE LIKE '%'||#{mbrPhone}||'%'
+	</select>
+
+	<select id="findOrderDetailByOrderNo" parameterType="int"
+		resultType="com.example.dto.OrderDetail">
+		SELECT *
+		FROM ORDERDETAIL OD, PRODUCT PD
+		WHERE OD.ORDNO = #{ordNo} AND OD.PRDCODE = PD.PRDCODE
+	</select>
+	
+	<select id="findOrderByOrderNo" parameterType="int" resultType="com.example.dto.Order">
+		SELECT *
+		FROM ORD
+		WHERE ORDNO=#{ordNo}
+	</select>
+</mapper>
+
+
+
+
+
+
