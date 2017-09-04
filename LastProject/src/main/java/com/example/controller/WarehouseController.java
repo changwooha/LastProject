@@ -45,8 +45,11 @@ public class WarehouseController {
 		for (int wlno = 1; wlno < 21; wlno++) {
 			int wlTotalQuantity = warehouseService.findWlQuantity(wlno);
 			wlTotalQuantityBywlNo.add(wlTotalQuantity);
+			System.out.println(wlTotalQuantityBywlNo.get(wlno-1));
 		}
+		System.out.println(wlTotalQuantityBywlNo.size());
 		model.addAttribute("wlTotalQuantityBywlNo", wlTotalQuantityBywlNo);
+		
 		///////////////////////////////////////////////
 
 		// Store & Release data Select from Database
