@@ -6,10 +6,10 @@
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=EUC-KR">
 <title>Insert title here</title>
-<link rel="stylesheet" href="/upgo3/resources/style/warehousetable.css">
+<!-- <link rel="stylesheet" href="/upgo3/resources/style/warehousetable.css">
 <link rel="stylesheet" href="/upgo3/resources/style/tabs.css">
 <link rel="stylesheet" href="/upgo3/resources/style/warehousestatetable.css">
-<link rel="stylesheet" href="/upgo3/resources/style/warehousediv.css">
+<link rel="stylesheet" href="/upgo3/resources/style/warehousediv.css"> -->
 <link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
 <script src="https://code.jquery.com/jquery-1.12.4.js"></script>
 <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
@@ -76,29 +76,21 @@
 		
 		// Change Table Background Color by Warehouse Status
 		var ware = ${wlTotalQuantityBywlNo};
-		$("#warehousestatetable").find("td").each(function(index){			
-			if(ware[index]>39){
+		$("#warehousestatetable").find("td").each(function(e){
+			var num = $(this).attr("num");
+			if(ware[num-1]>39){
 				$(this).css("background","red");	
-			}else if(ware[index]>24){
+			}else if(ware[num-1]>24){
 				$(this).css("background","orange");
 			}else{
 				$(this).css("background","green");
 			}
-		})
-		$("#warehousestatetable2").find("td").each(function(index){			
-			if(ware[index]>40){
-				$(this).css("background","red");
-			}else if(ware[index]>25){
-				$(this).css("background","orange");
-			}else{
-				$(this).css("background","green");
-			}
-		})
+		});
 		//////////////////////////////////////////////////////
 		
 		////////////Warehouse Status(been clicked)
 		$("#warehousestatetable").on("click", "td", function() {
-			var warehouseno = $(this).attr("attr");
+			var warehouseno = $(this).attr("num");
 			$.ajax({
 		        type:"POST",
 		        url:"alwaysAnswerSuccess.action",
@@ -110,20 +102,6 @@
 		            alert(error);
 		        }
 		    });
-		});
-		$("#warehousestatetable2").on("click", "td", function(index) {
-			var warehouseno = $(this).attr("attr");
-			$.ajax({
-		        type:"POST",
-		        url:"alwaysAnswerSuccess.action", 
-		        data : {"warehouseno":warehouseno} ,
-		        success: function(data,status,xhr){
-		        	$("#clickedWarehouseInfo").load('warehouseStatus.action',{ "warehouseno" : warehouseno}); 
-		        },
-		        error: function(xhr, status, error) {
-		            alert(error);
-		        }  
-		    }); 
 		});
 		////////////////////////////////////////////////////////////
 		$("#warehouseInSearch").on("click",function() {
@@ -327,56 +305,42 @@ td:last-child {
 			<li><a href="#tabs-3">출고관리</a></li>
 		</ul>
 		<div id="tabs-1">
-			<div id="warehousetablediv">
+			<div id="warehousetablediv" style="text-align:center;width:42%;display:inline-block;">
 				<table id="warehousestatetable">
 					<tr>
-						<td class="tabletd" id="warehouse1" attr="1">1</td>
-						<td class="tabletd" id="warehouse2" attr="2">2</td>
+						<td class="tabletd" id="warehouse1" num="1">1</td>
+						<td class="tabletd" id="warehouse2" num="2">2</td>
+						<td class="tabletd" id="sector" rowspan="5" ><h1>S<br>E<br>C<br>T<br>O<br>R</h1></td>
+						<td class="tabletd" id="warehouse11" num="11">11</td>
+						<td class="tabletd" id="warehouse12" num="12">12</td>
 					</tr>
 					<tr>
-						<td class="tabletd" id="warehouse3" attr="3">3</td>
-						<td class="tabletd" id="warehouse4" attr="4">4</td>
+						<td class="tabletd" id="warehouse3" num="3">3</td>
+						<td class="tabletd" id="warehouse4" num="4">4</td>
+						<td class="tabletd" id="warehouse13" num="13">13</td>
+						<td class="tabletd" id="warehouse14" num="14">14</td>
 					</tr>
 					<tr>
-						<td class="tabletd" id="warehouse5" attr="5">5</td>
-						<td class="tabletd" id="warehouse6" attr="6">6</td>
+						<td class="tabletd" id="warehouse5" num="5">5</td>
+						<td class="tabletd" id="warehouse6" num="6">6</td>
+						<td class="tabletd" id="warehouse15" num="15">15</td>
+						<td class="tabletd" id="warehouse16" num="16">16</td>
 					</tr>
 					<tr>
-						<td class="tabletd" id="warehouse7" attr="7">7</td>
-						<td class="tabletd" id="warehouse8" attr="8">8</td>
+						<td class="tabletd" id="warehouse7" num="7">7</td>
+						<td class="tabletd" id="warehouse8" num="8">8</td>
+						<td class="tabletd" id="warehouse17" num="17">17</td>
+						<td class="tabletd" id="warehouse18" num="18">18</td>
 					</tr>
 					<tr>
-						<td class="tabletd" id="warehouse9" attr="9">9</td>
-						<td class="tabletd" id="warehouse10" attr="10">10</td>
+						<td class="tabletd" id="warehouse9" num="9">9</td>
+						<td class="tabletd" id="warehouse10" num="10">10</td>
+						<td class="tabletd" id="warehouse19" num="19">19</td>
+						<td class="tabletd" id="warehouse20" num="20">20</td>
 					</tr>
 				</table>
 			</div>
-			<div id="secter"></div>
-			<div id="warehousetablediv2">
-				<table id="warehousestatetable2">
-					<tr>
-						<td class="tabletd" id="warehouse11" attr="11">11</td>
-						<td class="tabletd" id="warehouse12" attr="12">12</td>
-					</tr>
-					<tr>
-						<td class="tabletd" id="warehouse13" attr="13">13</td>
-						<td class="tabletd" id="warehouse14" attr="14">14</td>
-					</tr>
-					<tr>
-						<td class="tabletd" id="warehouse15" attr="15">15</td>
-						<td class="tabletd" id="warehouse16" attr="16">16</td>
-					</tr>
-					<tr>
-						<td class="tabletd" id="warehouse17" attr="17">17</td>
-						<td class="tabletd" id="warehouse18" attr="18">18</td>
-					</tr>
-					<tr>
-						<td class="tabletd" id="warehouse19" attr="19">19</td>
-						<td class="tabletd" id="warehouse20" attr="20">20</td>
-					</tr>
-				</table>
-			</div>
-			<div>
+			<div style="text-align:center;display:inline-block;vertical-align:top;">
 				<table id="clickedWarehouseInfo">
 					<thead>
 						<tr>
@@ -411,13 +375,13 @@ td:last-child {
 				</table>
 			</div>
 		</div>
-		<div id="tabs-2">
-			<div>
-				<p>
-					Date: <input type="text" class="datepicker" id="warehouseInDateS"> ~
-					Date: <input type="text" class="datepicker" id="warehouseInDateF">
-					<input type="button" value="search" id="warehouseInSearch">
-				</p>
+		<div id="tabs-2" style="text-align:center;">
+			<p>
+				Date: <input type="text" class="datepicker" id="warehouseInDateS"> ~
+				Date: <input type="text" class="datepicker" id="warehouseInDateF">
+				<input type="button" value="search" id="warehouseInSearch">
+			</p>
+			<div style="text-align:center;width:35%;display:inline-block;">
 				<table class="table-fill" id="warehouseIn">
 					<thead>
 						<tr>
@@ -443,58 +407,46 @@ td:last-child {
 					</tbody>
 				</table>
 			</div>
-			<div>
+			<div style="text-align:center;width:60%;display:inline-block;vertical-align:top;">
 				<table id="clickedProductInfoIn">
+					<c:if test = "${clickedProduct ne null }">
+					<thead>
+						<tr>
+							<th>제품 코드</th>
+							<th>제품 이름</th>
+							<th>제품 가격</th>
+							<th>제품 총 수량</th>
+							<th>제품 카테고리</th>
+							<th>제품 색상</th>
+							<th>제품 사이즈</th>
+							<th>제품 안전재고</th>
+							<th>제품 설치시간</th>
+						</tr>
+					</thead>
 					<tbody>
-						<c:if test = "${clickedProduct ne null }">
 						<tr>
-							<td>제품 코드</td>
 							<td>${clickedProduct.prdCode}</td>
-						</tr>
-						<tr>
-							<td>제품 이름</td>
 							<td>${clickedProduct.prdName}</td>
-						</tr>
-						<tr>
-							<td>제품 가격</td>
 							<td>${clickedProduct.prdPrice}</td>
-						</tr>
-						<tr>
-							<td>제품 총 수량</td>
 							<td>${clickedProduct.prdQuantity}</td>
-						</tr>
-						<tr>
-							<td>제품 카테고리</td>
 							<td>${clickedProduct.prdCategory}</td>
-						</tr>
-						<tr>
-							<td>제품 색상</td>
 							<td>${clickedProduct.prdColor}</td>
-						</tr>
-						<tr>
-							<td>제품 사이즈</td>
 							<td>${clickedProduct.prdSize}</td>
-						</tr>
-						<tr>
-							<td>제품 안전재고</td>
 							<td>${clickedProduct.prdSafeStock}</td>
-						</tr>
-						<tr>
-							<td>제품 설치시간</td>
 							<td>${clickedProduct.prdInstallTime}</td>
 						</tr>
-						</c:if>
 					</tbody>
+					</c:if>
 				</table>
 			</div>
 		</div>
-		<div id="tabs-3">
-			<div>
-				<p>
-					Date: <input type="text" class="datepicker" id="warehouseOutDateS"> ~
-					Date: <input type="text" class="datepicker" id="warehouseOutDateF">
-					<input type="button" value="search" id="warehouseOutSearch">
-				</p>
+		<div id="tabs-3" style="text-align:center;">
+			<p>
+				Date: <input type="text" class="datepicker" id="warehouseOutDateS"> ~
+				Date: <input type="text" class="datepicker" id="warehouseOutDateF">
+				<input type="button" value="search" id="warehouseOutSearch">
+			</p>
+			<div style="text-align:center;width:35%;display:inline-block;vertical-align:top;">
 				<table class="table-fill" id="warehouseOut">
 					<thead>
 						<tr>
@@ -520,48 +472,36 @@ td:last-child {
 					</tbody>
 				</table>
 			</div>
-			<div>
+			<div style="text-align:center;width:60%;display:inline-block;vertical-align:top;">
 				<table id="clickedProductInfoOut">
+					<c:if test = "${clickedProduct ne null }">
+					<thead>
+						<tr>
+							<th>제품 코드</th>
+							<th>제품 이름</th>
+							<th>제품 가격</th>
+							<th>제품 총 수량</th>
+							<th>제품 카테고리</th>
+							<th>제품 색상</th>
+							<th>제품 사이즈</th>
+							<th>제품 안전재고</th>
+							<th>제품 설치시간</th>
+						</tr>
+					</thead>
 					<tbody>
-						<c:if test = "${clickedProduct ne null }">
 						<tr>
-							<td>제품 코드</td>
 							<td>${clickedProduct.prdCode}</td>
-						</tr>
-						<tr>
-							<td>제품 이름</td>
 							<td>${clickedProduct.prdName}</td>
-						</tr>
-						<tr>
-							<td>제품 가격</td>
 							<td>${clickedProduct.prdPrice}</td>
-						</tr>
-						<tr>
-							<td>제품 총 수량</td>
 							<td>${clickedProduct.prdQuantity}</td>
-						</tr>
-						<tr>
-							<td>제품 카테고리</td>
 							<td>${clickedProduct.prdCategory}</td>
-						</tr>
-						<tr>
-							<td>제품 색상</td>
 							<td>${clickedProduct.prdColor}</td>
-						</tr>
-						<tr>
-							<td>제품 사이즈</td>
 							<td>${clickedProduct.prdSize}</td>
-						</tr>
-						<tr>
-							<td>제품 안전재고</td>
 							<td>${clickedProduct.prdSafeStock}</td>
-						</tr>
-						<tr>
-							<td>제품 설치시간</td>
 							<td>${clickedProduct.prdInstallTime}</td>
 						</tr>
-						</c:if>
 					</tbody>
+					</c:if>
 				</table>
 			</div>
 		</div>

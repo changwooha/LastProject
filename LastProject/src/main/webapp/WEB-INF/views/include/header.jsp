@@ -138,6 +138,7 @@
 		</c:if>
 		<li role="presentation"><a href="ordermain.action">효현박</a></li>
 		<li role="presentation"><a href="itemList.action">정목각</a></li>
+		<li role="presentation"><a href="warehouse/warehouse-status.action">창우하</a></li>
 		<c:if test="${loginmember ne null }">
 			<li role="presentation"><a href="/controller/logout"
 				onClick="googleOut()">로그아웃</a></li>
