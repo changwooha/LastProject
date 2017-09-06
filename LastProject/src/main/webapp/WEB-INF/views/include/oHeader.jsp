@@ -273,11 +273,11 @@ body {
 	<header class="header-fixed">
 		<div class="header-limiter">
 			<h1>
-				<a href="#">Company<span>logo</span></a>
+				<a href="/controller/oms/orderMain.action">Company<span>logo</span></a>
 			</h1>
 			<nav>
 				<a href="#">Home</a> <a href="#" class="selected">Blog</a> <a
-					href="oms/orderList.action">오더 조회</a> <a href="#">About</a> <a href="#">Faq</a> <a
+					href="/controller/oms/orderList.action">오더 조회</a> <a href="#">About</a> <a href="#">Faq</a> <a
 					href="#">Contact</a>
 			</nav>
 		</div>

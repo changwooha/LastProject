@@ -1,6 +1,7 @@
 package com.example.controller;
 
 import java.io.IOException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
@@ -26,6 +27,7 @@ import com.example.dto.Order;
 import com.example.dto.OrderDetail;
 import com.example.dto.Product;
 import com.example.service.OmsService;
+import com.example.service.ProductService;
 
 @Controller
 @RequestMapping(value = "oms")
@@ -34,7 +36,11 @@ public class OrderController {
 	@Autowired
 	@Qualifier("omsService")
 	private OmsService omsService;
-
+	
+	@Autowired
+	@Qualifier("productService")
+	private ProductService productService;
+	
 	// main에서 고객조회 window창 띄우기
 	@RequestMapping(value = "searchMember.action", method = RequestMethod.GET)
 	public String searchMemberForm() {
@@ -72,6 +78,14 @@ public class OrderController {
 	public String openWindow(Model model) {
 
 		ArrayList<Product> products = omsService.productList();
+		
+		for (int i=0; i< products.size(); i++){
+			String code =products.get(i).getPrdCode();
+		      int sum = productService.codeByAmount(code);
+		      products.get(i).setPrdQuantity(sum);
+		}
+		
+		
 		model.addAttribute("products", products);
 
 		return "order/searchProduct";
@@ -82,7 +96,7 @@ public class OrderController {
 	@RequestMapping(value = "orderConfirm.action", method = { RequestMethod.GET, RequestMethod.POST })
 	@ResponseBody
 	public String orderConfirm(Model model, HttpServletRequest request, HttpServletResponse response, Date installDate,
-			String mbrId, String ordName, String ordAddress, String ordPhone) throws IOException {
+			String mbrId, String ordName, String ordAddress, String ordPhone, String ordMemo, int count) throws IOException {
 
 		String[] sproductCodeList = request.getParameterValues("productCodeList");
 		String[] sQuantityList = request.getParameterValues("quantityList");
@@ -114,7 +128,7 @@ public class OrderController {
 			}
 		}
 		int drNo = driverEnableByDate.get(0).getDrNo();
-		omsService.insertOrder(mbrId, ordAddress, ordPhone, ordName, drNo, dbDate, totalInstallTime);
+		omsService.insertOrder(mbrId, ordAddress, ordPhone, ordName, drNo, dbDate, totalInstallTime, ordMemo);
 
 		for (int i = 0; i < productList.size(); i++) {
 			omsService.insertOrderList(productList.get(i).getPrdCode(), quantityList.get(i), mbrId);
@@ -166,18 +180,85 @@ public class OrderController {
 	// 상세페이지로 이동
 	@RequestMapping(value="orderDetail.action", method=RequestMethod.GET)
 	public String orderDetail(@RequestParam("ordNo") int ordNo, Model model){
-		System.out.println(ordNo);
-		List<Order> order = omsService.findOrderByOrderNo(ordNo);
+		Order order = omsService.findOrderByOrderNo(ordNo);
 		List<OrderDetail> orderDetail = omsService.findOrderDetailByOrderNo(ordNo);
-		System.out.println(orderDetail.get(0).getPrdName());
-		//List<Product> productDetail = omsService.findProductNameByOrderNo(ordNo);
-		//System.out.println(productDetail.get(0).getprd);
-		//System.out.println(order);
-		
 		model.addAttribute("orderDetail", orderDetail);
 		model.addAttribute("order", order);
 		return "order/orderDetail";
 		
+	}
+	
+	// 오더수정 페이지로 이동
+	@RequestMapping(value="modifyOrder.action", method=RequestMethod.GET)
+	public String modifyOrder(@RequestParam("ordNo") int ordNo, Model model){
+		Order order = omsService.findOrderByOrderNo(ordNo);
+		List<OrderDetail> orderDetail = omsService.findOrderDetailByOrderNo(ordNo);
+		model.addAttribute("orderDetail", orderDetail);
+		model.addAttribute("order", order);
+		System.out.println(orderDetail.get(0).getPrdName());
+		return "order/modifyOrder";
+	}
+	
+	// 오더수정하여 오더 확정하기
+	@RequestMapping(value = "modifyConfirm.action", method = { RequestMethod.GET, RequestMethod.POST })
+	@ResponseBody
+	public String modifyConfirm(Model model, HttpServletRequest request, HttpServletResponse response, Date installDate,
+			String mbrId, String ordName, String ordAddress, String ordPhone, String ordMemo, int count, int ordNo) throws IOException {
+		System.out.println("들어는오니?");
+		String[] sproductCodeList = request.getParameterValues("productCodeList");
+		String[] sQuantityList = request.getParameterValues("quantityList");
+		String[] sprdInstallTime = request.getParameterValues("prdInstallTime");
+		System.out.println(ordNo);
+		System.out.println(sQuantityList[0]);
+		ArrayList<Product> productList = new ArrayList<>();
+		ArrayList<Integer> quantityList = new ArrayList<>();
+		int totalInstallTime = 0;
+		for (int i = 0; i < sproductCodeList.length; i++) {
+			Product product = new Product();
+			productList.add(i, product);
+			productList.get(i).setPrdCode(sproductCodeList[i]);
+			productList.get(i).setPrdInstallTime(Integer.parseInt(sprdInstallTime[i]));
+			totalInstallTime += productList.get(i).getPrdInstallTime() * (Integer.parseInt(sQuantityList[i]));
+			quantityList.add(i, Integer.parseInt(sQuantityList[i]));
+		}
+		System.out.println(totalInstallTime);
+		// 날짜 받아와서 형변환
+		java.sql.Date dbDate = new java.sql.Date(installDate.getTime());
+		System.out.println(dbDate);
+		ArrayList<Driver> driverEnableByDate = omsService.findDriverEnableTimeByDate(dbDate, totalInstallTime);
+
+		if (driverEnableByDate.size() == 0) {
+			System.out.println("시공가능한 기사가 없습니다");
+			return "error";
+		} else {
+			for (int i = 0; i < driverEnableByDate.size(); i++) {
+				System.out.println(driverEnableByDate.get(i).getDrNo());
+			}
+		}
+		int drNo = driverEnableByDate.get(0).getDrNo();
+		omsService.updateOrder(mbrId, ordAddress, ordPhone, ordName, drNo, dbDate, totalInstallTime, ordMemo, ordNo);
+		
+		omsService.deleteOrderList(ordNo);
+		System.out.println(productList.get(0).getPrdCode());
+		for (int i = 0; i < productList.size(); i++) {
+			omsService.updateOrderList(ordNo, productList.get(i).getPrdCode(), quantityList.get(i), mbrId);
+		}
+		return "success";
+
+	}
+	@RequestMapping(value = "deleteOrder.action", method = RequestMethod.POST)
+	@ResponseBody
+	public String deleteOrder(HttpServletRequest request, HttpServletResponse response, int ordNo){
+		
+		Order order = omsService.findOrderByOrderNo(ordNo);
+		if (order == null){
+			return "error";
+		} else {
+		System.out.println(ordNo);
+		omsService.deleteOrderList(ordNo);
+		omsService.deleteOrder(ordNo);
+		}
+		return "success";
 	}
 
 }

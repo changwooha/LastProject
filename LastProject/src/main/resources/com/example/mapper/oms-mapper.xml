@@ -34,9 +34,9 @@
 		INSERT INTO
 		ORD(ORDNO,
 		MBRID, ORDNAME, ORDADDRESS, ORDPHONE, DRNO, ORDDELIVERYDATE,
-		INSTALLTIME)
+		INSTALLTIME, ORDMEMO)
 		VALUES(ORD_SEQ.NEXTVAL, #{mbrId}, #{ordName},
-		#{ordAddress}, #{ordPhone}, #{drNo}, #{dbDate}, #{totalInstallTime})
+		#{ordAddress}, #{ordPhone}, #{drNo}, #{dbDate}, #{totalInstallTime}, #{ordMemo})
 	</insert>
 
 	<select id="selectDriverEnableTimeByDate" parameterType="hashmap"
@@ -82,6 +82,27 @@
 		FROM ORD
 		WHERE ORDNO=#{ordNo}
 	</select>
+	
+	<update id="updateOrder" parameterType="hashmap">
+		UPDATE ORD
+    	SET MBRID = #{mbrId}, ORDNAME = #{ordName}, ORDADDRESS = #{ordAddress},
+    	ORDPHONE = #{ordPhone}, DRNO = #{drNo}, ORDDELIVERYDATE=#{dbDate}, 
+    	INSTALLTIME = #{totalInstallTime}, ORDMEMO = #{ordMemo}
+    	WHERE ORDNO = #{ordNo}
+	</update>
+	
+	<delete id="deleteOrderList" parameterType="int">
+		DELETE FROM ORDERDETAIL WHERE ORDNO = #{ordNo}
+	</delete>
+	
+	<insert id="updateOrderList" parameterType="hashmap">
+		INSERT INTO ORDERDETAIL(ODTNO, PRDCODE, ODTQUANTITY, ODTCHECK, ORDNO, MBRID)
+		VALUES(ORDERDETAIL_SEQ.NEXTVAL, #{prdCode}, #{quantityList}, 1, #{ordNo}, #{mbrId})
+	</insert>
+	
+	<delete id="deleteOrder" parameterType="int">
+		DELETE FROM ORD WHERE ORDNO = #{ordNo}
+	</delete>
 </mapper>
 
 

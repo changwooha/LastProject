@@ -44,8 +44,8 @@ public class OmsService {
 		
 	}
 
-	public void insertOrder(String mbrId, String ordAddress, String ordPhone, String ordName, int drNo, Date dbDate, int totalInstallTime) {
-		omsDao.insertOrder(mbrId, ordAddress, ordPhone, ordName, drNo, dbDate, totalInstallTime);
+	public void insertOrder(String mbrId, String ordAddress, String ordPhone, String ordName, int drNo, Date dbDate, int totalInstallTime, String ordMemo) {
+		omsDao.insertOrder(mbrId, ordAddress, ordPhone, ordName, drNo, dbDate, totalInstallTime, ordMemo);
 		
 	}
 
@@ -65,14 +65,30 @@ public class OmsService {
 		return orderDetail;
 	}
 
-/*	public List<Product> findProductNameByOrderNo(int ordNo) {
-		List<Product> productDetail = omsDao.findProductNameByOrderNo(ordNo);
-		return productDetail;
-	}*/
-
-	public List<Order> findOrderByOrderNo(int ordNo) {
-		List<Order> order = omsDao.findOrderByOrderNo(ordNo);
+	public Order findOrderByOrderNo(int ordNo) {
+		Order order = omsDao.findOrderByOrderNo(ordNo);
 		return order;
+	}
+
+	public void updateOrder(String mbrId, String ordAddress, String ordPhone, String ordName, int drNo,
+			java.sql.Date dbDate, int totalInstallTime, String ordMemo, int ordNo) {
+		omsDao.updateOrder(mbrId, ordAddress, ordPhone, ordName, drNo, dbDate, totalInstallTime, ordMemo, ordNo);
+		
+	}
+
+	public void deleteOrderList(int ordNo) {
+		omsDao.deleteOrderList(ordNo);
+		
+	}
+
+	public void updateOrderList(int ordNo, String prdCode, int quantityList, String mbrId) {
+		omsDao.updateOrderList(ordNo, prdCode, quantityList, mbrId);
+		
+	}
+
+	public void deleteOrder(int ordNo) {
+		omsDao.deleteOrder(ordNo);
+		
 	}
 
 }

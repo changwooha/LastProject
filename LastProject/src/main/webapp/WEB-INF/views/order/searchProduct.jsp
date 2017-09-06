@@ -22,6 +22,8 @@
 		$("tr[data-productcode] input[value=' + ']").on('click', function(event) {
 			var amount = $(this).closest("tr").find('input[name=amount]');
 			var amountValue = amount.val();
+			var installTime = $(this).closest("tr").find('input[name=prdInstallTime]');
+			var installTimeValue = installTime.val();
 			amount.val(++amountValue);
 			
 			subTotal(this, amountValue);
@@ -45,6 +47,7 @@
 			var amount = $(this).closest("tr").find('input[name=amount]');
 			var sum = $(this).closest("tr").find('input[name=sum]');
 			var prdInstallTime = $(this).closest("tr").find('input[name=prdInstallTime]');
+			var totalInstallTime = $(this).closest("tr").find('input[name=totalInstallTime]');
 			
 			/* 제품코드 제품명 단가 수량 합계 */
 			var codeValue = code.val();
@@ -53,17 +56,18 @@
 			var amountValue = amount.val();
 			var sumValue = sum.val();
 			var prdInstallTime = prdInstallTime.val();
-			
 			var str='';
 			
-			str+='<tr '+'id=prdtr'+num+' data-productcode='+codeValue+'>';
-			str+='<td id="prdCode" name="prdCode">'+codeValue+'</td>';
-			str+='<td id="prdName" name="prdName">'+nameValue+'</td>';
-			str+='<td id="prdPrice" name="prdPrice">'+priceValue+'</td>';
-			str+='<td id="prdQuantity" name="prdQuantity">'+amountValue+'</td>';
-			str+='<td id="prdSum" name="prdSum">'+sumValue+'</td>';
-			str+='<td id="prdInstallTime" name="prdInstallTime" type="hidden">'+prdInstallTime+'</td>';
-			str+='</tr>';
+			
+	        str+='<tr '+'id=prdtr'+num+' data-productcode='+codeValue+'>';
+	        str+='<td id="prdCode" name="prdCode">'+codeValue+'</td>';
+	        str+='<td id="prdName" name="prdName">'+nameValue+'</td>';
+	        str+='<td id="prdPrice" name="prdPrice">'+priceValue+'</td>';
+	        str+='<td id="prdQuantity" name="prdQuantity">'+amountValue+'</td>';
+	        str+='<td id="prdSum" name="prdSum">'+sumValue+'</td>';
+	        str+='<td id="prdInstallTime" name="prdInstallTime">'+prdInstallTime+'</td>';
+	        str+='<td><input id="delete" name="delete" type="button" value="삭제" onclick="deleteLine(this);"></td>';
+	        str+='</tr>';
 			
 			$('#myBody', opener.document).prepend(str);
 			
@@ -88,7 +92,7 @@
 				<td><input id="prdName" name="prdName" type="text" value="${ product.prdName }"></td>
 				<td><input id="prdPrice" name="prdPrice" type="text" value="${ product.prdPrice }"></td>
 				<td><input id="prdQuantity" name="prdQuantity" type="text" value="${ product.prdQuantity }"></td>
-				<td><input id="prdInstallTime" name="prdInstallTime" type="hidden" value="${ product.prdInstallTime }"></td>
+				<td><input id="prdInstallTime" name="prdInstallTime" type="text" value="${ product.prdInstallTime }"></td>
 				<td>
 					<input type="hidden" name="productId" value="${product.prdCode}"> 
 					<input type="text" id="amount" name="amount" size=4 value="0"> 

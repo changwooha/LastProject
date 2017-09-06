@@ -9,8 +9,14 @@ public class OrderDetail {
 	private String mbrId;
 	private int odtCheck;
 	private int odtType;
+	
+	
 	private String prdName; // 오더조회용
 	private String prdSize;
+	private int PrdPrice;
+	private int PrdQuantity;
+	private int PrdInstallTime;
+	
 	
 	public int getOdtNo() {
 		return odtNo;
@@ -65,6 +71,24 @@ public class OrderDetail {
 	}
 	public void setPrdSize(String prdSize) {
 		this.prdSize = prdSize;
+	}
+	public int getPrdPrice() {
+		return PrdPrice;
+	}
+	public void setPrdPrice(int prdPrice) {
+		PrdPrice = prdPrice;
+	}
+	public int getPrdQuantity() {
+		return PrdQuantity;
+	}
+	public void setPrdQuantity(int prdQuantity) {
+		PrdQuantity = prdQuantity;
+	}
+	public int getPrdInstallTime() {
+		return PrdInstallTime;
+	}
+	public void setPrdInstallTime(int prdInstallTime) {
+		PrdInstallTime = prdInstallTime;
 	}
 	
 

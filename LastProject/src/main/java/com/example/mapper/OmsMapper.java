@@ -21,5 +21,9 @@ public interface OmsMapper {
 	List<Order> findOrderList(HashMap<String, Object> params);
 	List<OrderDetail> findOrderDetailByOrderNo(int ordNo);
 	List<Product> findProductNameByOrderNo(int ordNo);
-	List<Order> findOrderByOrderNo(int ordNo);
+	Order findOrderByOrderNo(int ordNo);
+	void updateOrder(HashMap<String, Object> params);
+	void deleteOrderList(int ordNo);
+	void updateOrderList(HashMap<String, Object> params);
+	void deleteOrder(int ordNo);
 }

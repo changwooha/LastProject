@@ -50,7 +50,7 @@ public class OmsDao {
 		omsMapper.insertOrderList(params);
 	}
 
-	public void insertOrder(String mbrId, String ordAddress, String ordPhone, String ordName, int drNo, Date dbDate, int totalInstallTime) {
+	public void insertOrder(String mbrId, String ordAddress, String ordPhone, String ordName, int drNo, Date dbDate, int totalInstallTime, String ordMemo) {
 		HashMap<String, Object> params = new HashMap<>();
 		params.put("mbrId", mbrId);
 		params.put("ordAddress", ordAddress);
@@ -59,6 +59,7 @@ public class OmsDao {
 		params.put("drNo", drNo);
 		params.put("dbDate", dbDate);
 		params.put("totalInstallTime", totalInstallTime);
+		params.put("ordMemo", ordMemo);
 		omsMapper.insertOrder(params);
 	}
 
@@ -93,8 +94,42 @@ public class OmsDao {
 		return productDetail;
 	}
 
-	public List<Order> findOrderByOrderNo(int ordNo) {
-		List<Order> order = omsMapper.findOrderByOrderNo(ordNo);
+	public Order findOrderByOrderNo(int ordNo) {
+		Order order = omsMapper.findOrderByOrderNo(ordNo);
 		return order;
+	}
+
+	public void updateOrder(String mbrId, String ordAddress, String ordPhone, String ordName, int drNo, Date dbDate,
+			int totalInstallTime, String ordMemo, int ordNo) {
+		HashMap<String, Object> params = new HashMap<>();
+		params.put("mbrId", mbrId);
+		params.put("ordAddress", ordAddress);
+		params.put("ordPhone", ordPhone);
+		params.put("ordName", ordName);
+		params.put("drNo", drNo);
+		params.put("dbDate", dbDate);
+		params.put("totalInstallTime", totalInstallTime);
+		params.put("ordMemo", ordMemo);
+		params.put("ordNo", ordNo);
+		omsMapper.updateOrder(params);
+		
+	}
+
+	public void deleteOrderList(int ordNo) {
+		omsMapper.deleteOrderList(ordNo);
+	}
+
+	public void updateOrderList(int ordNo, String prdCode, int quantityList, String mbrId) {
+		HashMap<String, Object> params = new HashMap<>();
+		params.put("ordNo", ordNo);
+		params.put("prdCode", prdCode);
+		params.put("quantityList", quantityList);
+		params.put("mbrId", mbrId);
+		omsMapper.updateOrderList(params);
+		
+	}
+
+	public void deleteOrder(int ordNo) {
+		omsMapper.deleteOrder(ordNo);
 	}
 }
