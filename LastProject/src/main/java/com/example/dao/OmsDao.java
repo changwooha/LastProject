@@ -132,4 +132,12 @@ public class OmsDao {
 	public void deleteOrder(int ordNo) {
 		omsMapper.deleteOrder(ordNo);
 	}
+
+	public List<Product> filterProductList(String searchOption, String keyword) {
+		HashMap<String, Object> params = new HashMap<>();
+		params.put("searchOption", searchOption);
+		params.put("keyword", keyword);
+		List<Product> products = omsMapper.filterProductList(params);
+		return products;
+	}
 }

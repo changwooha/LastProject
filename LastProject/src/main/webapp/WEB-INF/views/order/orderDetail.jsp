@@ -6,20 +6,13 @@
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions"%>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
 <link rel="stylesheet" href="../resources/order.css">
+<link rel="stylesheet" href="/controller/resources/button.css">
 <script src="https://code.jquery.com/jquery-3.2.1.js"></script>
 <script type="text/javascript">
-	$(function() {
-		$(document).ready(function() {
-			alert("하염!!");
-		});
-
-		$('#modify').click(function() {
-
-		})
-
-	});
 </script>
 <body>
+<jsp:include page="/WEB-INF/views/include/oHeader.jsp"/>
+<br><br>
 	<table id="orderDetail" class="type10">
 		<thead>
 			<tr>
@@ -44,7 +37,6 @@
 			</tr>
 	</table>
 	<hr noshade>
-	<hr noshade>
 	<br>
 	<table class="type10">
 		<thead>
@@ -59,21 +51,24 @@
 				<td>${ orderDetail.prdCode }</td>
 				<td>${ orderDetail.prdName }</td>
 				<td>${ orderDetail.odtQuantity }</td>
+				
 			</tr>
 		</c:forEach>
-	</table>
-
+		
+	</table><br><br><br>
+	<div align="center">
 	<jsp:useBean id="now" class="java.util.Date" />
 	<fmt:formatDate value="${now}" pattern="yyyy-MM-dd" var="today" />
 	<fmt:formatDate value="${order.ordDeliveryDate}"
 		pattern="yyyy-MM-dd" var="deliveryDate" />
 	<c:choose>
 		<c:when test="${today < deliveryDate}">
-			<a href="modifyOrder.action?ordNo=${order.ordNo}"><input type="button" value="오더수정"></a>
+			<a href="modifyOrder.action?ordNo=${order.ordNo}" class="button">오더수정</a>
 		</c:when>
 		<c:otherwise>
-			<button>오더수정불가</button>
+			<a href="#" class="button">수정불가</a>
 		</c:otherwise>
 	</c:choose>
+	</div>
 </body>
 </html>

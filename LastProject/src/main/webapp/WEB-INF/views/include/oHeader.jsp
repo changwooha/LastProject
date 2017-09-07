@@ -263,7 +263,13 @@ body.fixed .header-fixed .header-limiter nav {
 body {
 	margin: 0;
 	padding: 0;
-	height: 1500px;
+	height: auto;
+}
+.text {
+	border: none;
+	border-bottom: solid 1px;
+	background-color: #eaf0f2;
+
 }
 
 </style>

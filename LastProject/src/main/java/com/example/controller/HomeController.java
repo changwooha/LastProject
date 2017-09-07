@@ -43,12 +43,6 @@ public class HomeController {
 		return "home";
 	}
 	
-	// 추후 팝업으로 변경 예정 -효현 
-	@RequestMapping(value = "/ordermain.action", method = RequestMethod.GET)
-	public String login() {
-		
-		return "order/ordermain";
-	}
 	
 	// Product List
 	@RequestMapping(value = "/itemList.action", method = RequestMethod.GET)

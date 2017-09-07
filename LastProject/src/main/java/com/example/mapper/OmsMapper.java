@@ -26,4 +26,5 @@ public interface OmsMapper {
 	void deleteOrderList(int ordNo);
 	void updateOrderList(HashMap<String, Object> params);
 	void deleteOrder(int ordNo);
+	List<Product> filterProductList(HashMap<String, Object> params);
 }

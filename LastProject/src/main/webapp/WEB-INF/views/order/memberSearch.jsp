@@ -7,6 +7,7 @@
 <title>Home</title>
 <script src="https://code.jquery.com/jquery-3.2.1.js"></script>
 <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+<link rel="stylesheet" href="/controller/resources/button.css">
 <script type="text/javascript">
 $(function(){
 	
@@ -46,7 +47,7 @@ $(function(){
 		<form id="searchForm" action="searchMember.action" method="post">
 			고객명 <input type="text" name="mbrName" id="mbrName" placeholder=★><br>
 			연락처 <input type="text" name="mbrPhone" id="mbrPhone" placeholder=★>
-			<input type="button" id="search" name="search" value="Search-Member">
+			<a href="#" class="miniButton" id="search">Search!</a>
 		</form>
 		<form id="findForm"></form>
 		<table id="searchTable">

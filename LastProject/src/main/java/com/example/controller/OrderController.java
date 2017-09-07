@@ -9,6 +9,7 @@ import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
@@ -36,11 +37,29 @@ public class OrderController {
 	@Autowired
 	@Qualifier("omsService")
 	private OmsService omsService;
-	
+
 	@Autowired
 	@Qualifier("productService")
 	private ProductService productService;
-	
+
+	// main -> ordermain
+	@RequestMapping(value = "ordermain.action", method = RequestMethod.GET)
+	public String login(HttpSession session) {
+
+		Member member = (Member) session.getAttribute("loginmember");
+
+		if (member != null) {
+			String mbrId = member.getMbrId();
+
+			System.out.println(mbrId);
+			System.out.println(member.getMbrUserType());
+			return "/order/ordermain";
+		} else {
+			return "redirect:/login";
+		}
+
+	}
+
 	// main에서 고객조회 window창 띄우기
 	@RequestMapping(value = "searchMember.action", method = RequestMethod.GET)
 	public String searchMemberForm() {
@@ -71,6 +90,17 @@ public class OrderController {
 		return "order/searchItem";
 	}
 
+	// 상품테이블 조건검색
+	@RequestMapping(value = "searchProduct.action", method = RequestMethod.GET)
+	public String filter(@RequestParam(defaultValue = "all") String searchOption,
+			@RequestParam(defaultValue = "") String keyword, HttpServletRequest req, Model model) {
+		
+	List<Product> products = omsService.filterProductList(searchOption, keyword);
+	model.addAttribute("products", products);
+	
+		return "order/searchProduct";
+	}
+
 	/////////////////////// 주문목록//////////////////////////////////
 
 	// 주문목록 팝업 띄우기
@@ -78,14 +108,13 @@ public class OrderController {
 	public String openWindow(Model model) {
 
 		ArrayList<Product> products = omsService.productList();
-		
-		for (int i=0; i< products.size(); i++){
-			String code =products.get(i).getPrdCode();
-		      int sum = productService.codeByAmount(code);
-		      products.get(i).setPrdQuantity(sum);
+
+		for (int i = 0; i < products.size(); i++) {
+			String code = products.get(i).getPrdCode();
+			int sum = productService.codeByAmount(code);
+			products.get(i).setPrdQuantity(sum);
 		}
-		
-		
+
 		model.addAttribute("products", products);
 
 		return "order/searchProduct";
@@ -96,7 +125,8 @@ public class OrderController {
 	@RequestMapping(value = "orderConfirm.action", method = { RequestMethod.GET, RequestMethod.POST })
 	@ResponseBody
 	public String orderConfirm(Model model, HttpServletRequest request, HttpServletResponse response, Date installDate,
-			String mbrId, String ordName, String ordAddress, String ordPhone, String ordMemo, int count) throws IOException {
+			String mbrId, String ordName, String ordAddress, String ordPhone, String ordMemo, int count)
+			throws IOException {
 
 		String[] sproductCodeList = request.getParameterValues("productCodeList");
 		String[] sQuantityList = request.getParameterValues("quantityList");
@@ -137,15 +167,14 @@ public class OrderController {
 
 	}
 
-	
 	////////////////// 오더조회 ///////////////////
-	
+
 	// 조회 창으로 이동하기
 	@RequestMapping(value = "orderList.action", method = RequestMethod.GET)
 	public String orderList() {
 		return "order/orderList";
 	}
-	
+
 	// 조건검색
 	@RequestMapping(value = "findOrderList.action", method = { RequestMethod.GET, RequestMethod.POST })
 	@ResponseBody
@@ -160,13 +189,12 @@ public class OrderController {
 			return "error";
 		} else {
 			return "success";
-			}
 		}
+	}
 
-	
 	// 조건에 맞는 테이블 가져오기
 	@RequestMapping(value = "filterOrderList.action", method = RequestMethod.GET)
-	public String filterOrderList(Model model, HttpServletRequest request, HttpServletResponse response,String mbrId,
+	public String filterOrderList(Model model, HttpServletRequest request, HttpServletResponse response, String mbrId,
 			String mbrName, String mbrPhone, Date startDate, Date finishDate) {
 		System.out.println(mbrName);
 		java.sql.Date stDate = new java.sql.Date(startDate.getTime());
@@ -174,23 +202,24 @@ public class OrderController {
 
 		List<Order> orderList = omsService.findOrderList(mbrId, mbrName, mbrPhone, stDate, fhDate);
 		model.addAttribute("orderList", orderList);
-		
+
 		return "order/filterOrderList";
 	}
+
 	// 상세페이지로 이동
-	@RequestMapping(value="orderDetail.action", method=RequestMethod.GET)
-	public String orderDetail(@RequestParam("ordNo") int ordNo, Model model){
+	@RequestMapping(value = "orderDetail.action", method = RequestMethod.GET)
+	public String orderDetail(@RequestParam("ordNo") int ordNo, Model model) {
 		Order order = omsService.findOrderByOrderNo(ordNo);
 		List<OrderDetail> orderDetail = omsService.findOrderDetailByOrderNo(ordNo);
 		model.addAttribute("orderDetail", orderDetail);
 		model.addAttribute("order", order);
 		return "order/orderDetail";
-		
+
 	}
-	
+
 	// 오더수정 페이지로 이동
-	@RequestMapping(value="modifyOrder.action", method=RequestMethod.GET)
-	public String modifyOrder(@RequestParam("ordNo") int ordNo, Model model){
+	@RequestMapping(value = "modifyOrder.action", method = RequestMethod.GET)
+	public String modifyOrder(@RequestParam("ordNo") int ordNo, Model model) {
 		Order order = omsService.findOrderByOrderNo(ordNo);
 		List<OrderDetail> orderDetail = omsService.findOrderDetailByOrderNo(ordNo);
 		model.addAttribute("orderDetail", orderDetail);
@@ -198,12 +227,13 @@ public class OrderController {
 		System.out.println(orderDetail.get(0).getPrdName());
 		return "order/modifyOrder";
 	}
-	
+
 	// 오더수정하여 오더 확정하기
 	@RequestMapping(value = "modifyConfirm.action", method = { RequestMethod.GET, RequestMethod.POST })
 	@ResponseBody
 	public String modifyConfirm(Model model, HttpServletRequest request, HttpServletResponse response, Date installDate,
-			String mbrId, String ordName, String ordAddress, String ordPhone, String ordMemo, int count, int ordNo) throws IOException {
+			String mbrId, String ordName, String ordAddress, String ordPhone, String ordMemo, int count, int ordNo)
+			throws IOException {
 		System.out.println("들어는오니?");
 		String[] sproductCodeList = request.getParameterValues("productCodeList");
 		String[] sQuantityList = request.getParameterValues("quantityList");
@@ -237,7 +267,7 @@ public class OrderController {
 		}
 		int drNo = driverEnableByDate.get(0).getDrNo();
 		omsService.updateOrder(mbrId, ordAddress, ordPhone, ordName, drNo, dbDate, totalInstallTime, ordMemo, ordNo);
-		
+
 		omsService.deleteOrderList(ordNo);
 		System.out.println(productList.get(0).getPrdCode());
 		for (int i = 0; i < productList.size(); i++) {
@@ -246,17 +276,18 @@ public class OrderController {
 		return "success";
 
 	}
+
 	@RequestMapping(value = "deleteOrder.action", method = RequestMethod.POST)
 	@ResponseBody
-	public String deleteOrder(HttpServletRequest request, HttpServletResponse response, int ordNo){
-		
+	public String deleteOrder(HttpServletRequest request, HttpServletResponse response, int ordNo) {
+
 		Order order = omsService.findOrderByOrderNo(ordNo);
-		if (order == null){
+		if (order == null) {
 			return "error";
 		} else {
-		System.out.println(ordNo);
-		omsService.deleteOrderList(ordNo);
-		omsService.deleteOrder(ordNo);
+			System.out.println(ordNo);
+			omsService.deleteOrderList(ordNo);
+			omsService.deleteOrder(ordNo);
 		}
 		return "success";
 	}

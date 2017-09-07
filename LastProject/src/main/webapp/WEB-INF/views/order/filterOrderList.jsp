@@ -10,26 +10,22 @@
 <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
 <script type="text/javascript">
 </script>
+<style>
+</style>
 <body>
-
+	<div class="bodyDiv">
 	<form id="findForm">
-		<table id="orderSearchTable" border="1">
-			<colgroup>
-				<col width="40">
-				<col width="100">
-				<col width="110">
-				<col width="80">
-				<col width="50">
-			</colgroup>
+		<table id="orderSearchTable" width="100%" cellpadding="2" cellspacing="0"
+		border="1" style="border-collapse: collapse; border: 1px gray solid;">
 			<thead>
 				<tr>
-					<th scope="col">오더번호</th>
-					<th scope="col">고객ID</th>
-					<th scope="col">성명</th>
-					<th scope="col">주소</th>
-					<th scope="col">연락처</th>
-					<th scope="col">주문일</th>
-					<th scope="col">조회</th>
+					<th>오더번호</th>
+					<th>고객ID</th>
+					<th>성명</th>
+					<th>주소</th>
+					<th>연락처</th>
+					<th>주문일</th>
+					<th>조회</th>
 				</tr>
 			</thead>
 			<c:forEach var="orderList" items="${orderList}">
@@ -41,11 +37,11 @@
 					<td>${ orderList.ordPhone }</td>
 					<td><fmt:formatDate value="${ orderList.ordDate }"
 							pattern="yyyy-MM-dd" /></td>
-					<td class="orderDetail" id="${orderList.ordNo}"><a href="orderDetail.action?ordNo=${orderList.ordNo}">조회</a>
+					<td class="orderDetail" id="${orderList.ordNo}"><a class="miniButton" href="orderDetail.action?ordNo=${orderList.ordNo}">♥</a>
 				</tr>
 			</c:forEach>
 		</table>
-	</form>
+	</form></div>
 </body>
 
 </html>

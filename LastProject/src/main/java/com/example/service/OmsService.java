@@ -91,4 +91,9 @@ public class OmsService {
 		
 	}
 
+	public List<Product> filterProductList(String searchOption, String keyword) {
+		List<Product> products = omsDao.filterProductList(searchOption, keyword);
+		return products;
+	}
+
 }

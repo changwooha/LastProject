@@ -7,9 +7,24 @@
 <title>Home</title>
 <script src="https://code.jquery.com/jquery-3.2.1.js"></script>
 <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+<style type="text/css">
+.bodyDiv {
+    border: 1px solid gray;
+    margin-top: 10px;
+    margin-bottom: 20px;
+    margin-right: 70px;
+    margin-left: 70px;
+}
+.text {
+	border: none;
+	border-bottom: solid 1px;
+	background-color: #eaf0f2;
 
+}
+</style>
 <!-- 달력 js -->
 <link rel="stylesheet" href="//code.jquery.com/ui/1.11.4/themes/smoothness/jquery-ui.css">
+<link rel="stylesheet" href="/controller/resources/button.css">
 <script type="text/javascript">
 	// 멤버검색	
 	function openMbChk() {
@@ -33,8 +48,7 @@
 	    //라인 삭제
 	    tr.remove();
 	 	--count
-	 	alert('행의수는');
-	 	alert(count);
+	 	alert("선택행이 삭제되었습니다.");
 
 	}
 	//
@@ -63,15 +77,15 @@
 				},
 			})
 		});
-		$('#selection').click( function(){
-			for (var i = 0; i < $('#myBody').children('tr[id^=prdtr]').length; i++) {
-				var j = i+1;
-			 $('#myBody tr:nth-child('+j+')').attr('id','prdtr'+i);
-			}
-		});
+
 		$('#modifyConfirm').click(
 			function() { 
-				alert("들어는 옵니다");
+				
+				for (var i = 0; i < $('#myBody').children('tr[id^=prdtr]').length; i++) {
+					var j = i+1;
+				 $('#myBody tr:nth-child('+j+')').attr('id','prdtr'+i);
+				}
+				
 				var count = $('tr[id^=prdtr]').length;
 				var productCodeList = [];
 				var quantityList = [];
@@ -128,19 +142,15 @@
 		<p style="margin-left: 300px">수정</p>
 		<div id="added">
 			<hr noshade>
-			<h2>오더번호 : <input type="text" style="" name="ordNo" id="ordNo" value="${order.ordNo}"></h2>
-			<h2>고객정보</h2>
-			<h4>주문고객</h4>
-			고객명 <input type="text" style="" name="mbrName" id="mbrName" value="${order.ordName}"><br>
-			주소 <input type="text" style="" name="mbrAddress" id="mbrAddress" value="${order.ordAddress}"><br>
-			연락처 <input type="text" style="" name="mbrPhone" id="mbrPhone" value="${order.ordPhone}"><br>
-			<input type="hidden" id="mbrId" name="mbrId" value="${order.mbrId }"> <input
-				id="search" name="search" type="button" value="조회"
-				onclick="openMbChk()">
+			<h3>오더번호 : <input type="text" style="" name="ordNo" id="ordNo" value="${order.ordNo}" class="text"></h3>
+			<h3>고객정보</h3>
+			<b>고객명 : </b> <input type="text" style="" name="mbrName" id="mbrName" value="${order.ordName}" class="text"><br>
+			<b>주&nbsp;&nbsp;&nbsp;소  : </b> <input type="text" style="" name="mbrAddress" id="mbrAddress" value="${order.ordAddress}" class="text"><br>
+			<b>연락처  : </b><input type="text" style="" name="mbrPhone" id="mbrPhone" value="${order.ordPhone}" class="text"><br>
+			<input type="hidden" id="mbrId" name="mbrId" value="${order.mbrId }" class="text"> 			
+			<a href="#" class="miniButton" id="search" name="search" onclick="openMbChk()">조회</a>
 			<p>
-				<input type="button" value="제품 목록" id="searchProduct"
-					name="searchProduct" onclick="openProductList()">
-				<button id="selection">제품선택완료</button>
+				<a href="#" class="miniButton" id="searchProduct" onclick="openProductList()">제품목록</a>
 			</p>
 		</div>
 
@@ -152,6 +162,7 @@
 					<th>단가</th>
 					<th>수량</th>
 					<th>합계</th>
+					<th>시공시간</th>
 					<hr noshade>
 				</tr>
 				<tbody id="myBody">
@@ -162,8 +173,8 @@
 		<td id="prdPrice" name="prdPrice">${orderDetail.prdPrice}</td>
 		<td id="prdQuantity" name="prdQuantity">${orderDetail.odtQuantity}</td>
 		<td id="prdSum" name="prdSum">${orderDetail.prdPrice * orderDetail.odtQuantity}</td>
-		<td id="prdInstallTime" name="prdInstallTime">${orderDetail.prdInstallTime}</td>
-		<td><input id="delete" name="delete" type="button" value="삭제" onclick="deleteLine(this);"></td>
+		<td id="prdInstallTime" name="prdInstallTime">${orderDetail.prdInstallTime} 시간</td>
+		<td><input id="delete" name="delete" type="button" value="x" class="miniminiButton" onclick="deleteLine(this);"></td>
 		</tr>
 					</c:forEach>
 				</tbody>
@@ -171,19 +182,14 @@
 			<hr noshade>
 		</div>
 		<p>
-			시공일 : <input type="text" id="datepicker">
+			<b>시공일 : </b><input type="text" id="datepicker">
 		</p>
-		<p> 시공기사 남김 말<input type="text" id="orderMemo" value="${order.ordMemo}"></p>
+		<p> <b>시공기사 남김 말 : </b><input type="text" id="orderMemo" value="${order.ordMemo}" size="30">
+		&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <a href="#" class="button" id="modifyConfirm">오더확정</a>
+		&nbsp;&nbsp;<a href="#" class="button" id="deleteOrder">오더삭제</a></p>
 		<div id="numOfList">
-			<b id="numOfCar"> 총 합계 : 얼마죠</b> <br>
-		</div>
-
-		<div id="buttonList">
-			<button id="modifyConfirm">오더 확정</button>
-			<button id="deleteOrder">오더 삭제</button>
-			<input id="outpark" type="button" class="btt" value="견적저장"></input>
+			<b id="numOfCar"> 총 합계 : 0원</b> <br>
 		</div>
 
 </body>
-
 </html>
