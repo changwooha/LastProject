@@ -1,0 +1,161 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.example.mapper.BoardMapper">
+
+	<!--//////////////////////////////////////////////////////////////////////////////// -->
+	<!--//////////////////////////////////////////////////////////////////////////////// -->
+
+	<!-- Board -->
+	<insert id="insertBoardByName" parameterType="com.example.dto.Board"
+		useGeneratedKeys="false" keyProperty="boardNo">
+		<selectKey keyProperty="boardNo" resultType="integer" order="BEFORE">
+			select board_seq.nextval from dual
+		</selectKey>
+		<!-- 자동증가컬럼을 이용한다. -->
+		insert
+		into board
+		values(#{boardNo},#{boardTitle},#{boardContent},sysdate,1,#{boardWriter})
+	</insert>
+
+	<select id="selectBoardByBoardNo" parameterType="com.example.dto.Board"
+		resultType="com.example.dto.Board">
+
+		select
+		boardtitle,boardwriter,boardcontent,boardNo,boardReadCount
+		from board
+		where
+		boardno=#{boardNo}
+
+	</select>
+	<select id="selectBoard" resultType="com.example.dto.Board">
+		select *
+		from board
+		order by
+		boardno desc
+	</select>
+	<select id="selectBoardAttachByBoardNo" resultType="com.example.dto.BoardAttach" 
+	parameterType="int">
+	select *
+	from boardattach
+	where boardNo = #{boardNo}
+	</select>
+	<select id="selectFileInfo" 
+	resultType="com.example.dto.BoardAttach" parameterType="int">
+	select savedfilename,userfilename
+	from boardAttach
+	where boardNo = #{boardNo}
+	</select>
+	<delete id="deleteBoardByBoardNo" parameterType="com.example.dto.Board">
+		DELETE
+		FROM board
+		WHERE boardno=#{boardNo}
+	</delete>
+
+	<update id="updateBoardByBoardNo" parameterType="com.example.dto.Board">
+		UPDATE board
+		SET
+		boardTitle = #{boardTitle}, boardContent = #{boardContent}
+		WHERE
+		boardNo = #{boardNo}
+
+	</update>
+
+	<insert id="insertBoardAttach" parameterType="com.example.dto.BoardAttach">
+		INSERT
+		INTO boardattach(attachno, boardno, savedfilename, userfilename)
+		VALUES (boardattach_seq.nextval, #{boardNo}, #{savedFileName}, #{userFileName})
+	</insert>
+
+	<update id="updateReadCountByBoardNo" parameterType="com.example.dto.Board">
+		UPDATE board
+		SET boardReadCount = boardReadCount+1
+		WHERE boardNo = #{boardNo}
+	</update>
+
+	<select id="selectBoardByKey" parameterType="String"
+		resultType="com.example.dto.Board">
+		select
+		boardtitle,boardwriter,boardcontent,boardNo,boardReadCount
+		from board
+		where boardtitle like '%'|| #{key} ||'%'
+		order by boardno desc
+	</select>
+
+	<!--//////////////////////////////////////////////////////////////////////////////// -->
+	<!--//////////////////////////////////////////////////////////////////////////////// -->
+
+
+	<!-- Comment -->
+	<insert id="insertComment" parameterType="com.example.dto.BoardComment">
+		INSERT INTO
+		boardcomment
+		(commentno, boardno, writer, content,regdate)
+		VALUES
+		(boardcomment_seq.nextVal, #{boardNo},
+		#{writer},
+		#{content},sysdate)
+	</insert>
+
+	<update id="updateComment" parameterType="com.example.dto.BoardComment">
+		UPDATE boardcomment
+		SET
+		content = #{content}
+		WHERE commentno = #{commentNo}
+	</update>
+
+	<delete id="deleteComment" parameterType="int">
+		DELETE FROM
+		boardcomment
+		WHERE commentno = #{no}
+	</delete>
+
+	<select id="selectCommentByBoardNo" parameterType="int"
+		resultType="com.example.dto.BoardComment">
+		SELECT commentno, boardno, writer, content, regdate
+		FROM
+		boardcomment WHERE boardno = #{boardNo}
+	</select>
+	<!--//////////////////////////////////////////////////////////////////////////////// -->
+	<!--//////////////////////////////////////////////////////////////////////////////// -->
+
+	<!-- LIKES -->
+	<insert id="insertLikes" parameterType="com.example.dto.Likes">
+		insert
+		into likes
+		values
+		(likes_seq.nextval,#{boardNo},#{boardWriter},#{mbrId},sysdate)
+	</insert>
+
+	<select id="selectLikesByIdAndWriter" parameterType="com.example.dto.Likes"
+		resultType="com.example.dto.Likes">
+		select *
+		from likes
+		where mbrid=#{mbrId} AND
+		boardwriter = #{boardWriter} AND boardno = #{boardNo}
+	</select>
+	<delete id="deleteLikesByIdAndWriter" parameterType="com.example.dto.Likes">
+		delete
+		from
+		likes
+		where mbrid = #{mbrId} AND boardwriter = #{boardWriter}
+		AND
+		boardno = #{boardNo}
+	</delete>
+
+	<select id="selectLikesByBoardWriter" parameterType="String"
+		resultType="com.example.dto.Likes">
+		select distinct mbrId, boardWriter
+		from likes
+		where
+		boardWriter=#{boardWriter}
+	</select>
+	<insert id="insertMessage" parameterType="com.example.dto.Likes">
+		insert
+		into
+		message(messageno,boardWriter,mbrid)
+		values(message_seq.nextval,#{boardWriter},#{mbrId})
+	</insert>
+</mapper>

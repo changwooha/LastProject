@@ -27,15 +27,15 @@
 	
 	<!-- Converter 등록. 모든 클래스에서 Converting이 가능하게 -->
 	<!-- 일반적인 Convert처리 -->
-	<!-- <beans:bean id="convertService"
+	<beans:bean id="convertService"
 		class="org.springframework.context.support.ConversionServiceFactoryBean">
 		<beans:property name="converters">
 			<beans:list>
-				<beans:bean class="com.springbadaweb.controller.DateToStringConverter"></beans:bean>
-				<beans:bean class="com.springbadaweb.controller.StringToDateConverter"></beans:bean>
+				<beans:bean class="com.example.controller.DateToStringConverter"></beans:bean>
+				<beans:bean class="com.example.controller.StringToDateConverter"></beans:bean>
 			</beans:list>
 		</beans:property>
-	</beans:bean> -->
+	</beans:bean>
 
 	<!-- 업로드용 -->
 	<beans:bean id="multipartResolver"
