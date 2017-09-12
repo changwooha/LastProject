@@ -139,7 +139,7 @@
 			<li role="presentation"><a href="/controller/login">로그인</a></li>
 			<li role="presentation"><a href="/controller/signup">회원가입</a></li>
 		</c:if>
-		<li role="presentation"><a href="ordermain.action">효현박</a></li>
+		<li role="presentation"><a href="/controller/oms/ordermain.action">효현박</a></li>
 		<li role="presentation"><a href="itemList.action">정목각</a></li>
 		<li role="presentation"><a href="warehouse/warehouse-status.action">창우하</a></li>
 		<c:if test="${loginmember ne null }">

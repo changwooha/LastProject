@@ -173,7 +173,7 @@
 		<td id="prdPrice" name="prdPrice">${orderDetail.prdPrice}</td>
 		<td id="prdQuantity" name="prdQuantity">${orderDetail.odtQuantity}</td>
 		<td id="prdSum" name="prdSum">${orderDetail.prdPrice * orderDetail.odtQuantity}</td>
-		<td id="prdInstallTime" name="prdInstallTime">${orderDetail.prdInstallTime} 시간</td>
+		<td id="prdInstallTime" name="prdInstallTime">${orderDetail.prdInstallTime}</td>
 		<td><input id="delete" name="delete" type="button" value="x" class="miniminiButton" onclick="deleteLine(this);"></td>
 		</tr>
 					</c:forEach>
@@ -188,8 +188,7 @@
 		&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <a href="#" class="button" id="modifyConfirm">오더확정</a>
 		&nbsp;&nbsp;<a href="#" class="button" id="deleteOrder">오더삭제</a></p>
 		<div id="numOfList">
-			<b id="numOfCar"> 총 합계 : 0원</b> <br>
-		</div>
+					</div>
 
 </body>
 </html>

@@ -116,7 +116,7 @@
 
 	<jsp:include page="/WEB-INF/views/include/oHeader.jsp"/>
 	<div class="bodyDiv">
-		<p style="margin-left: 300px">님 안녕하세요</p>
+		<!-- <p style="margin-left: 300px">님 안녕하세요</p> -->
 		<div id="added">
 			<hr noshade>
 			<h3>고객정보</h3>
@@ -154,7 +154,7 @@
 		<p> <b>시공기사 남김 말 : </b><input type="text" id="orderMemo" class="text" size="30">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
 		<a href="#" class="button" id="orderConfirm">오더확정</a></p>
 		<div id="numOfList">
-			<b id="numOfCar"> 총 합계 : 0원</b> <br>
+			<!-- <b id="numOfCar"> 총 합계 : 0원</b>  --><br>
 		</div>
 </div>
 </body>
